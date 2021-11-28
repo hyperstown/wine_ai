@@ -1,0 +1,31 @@
+name,type,price,is_alcoholic,is_vegan
+Lambrusco,red,20,1,1
+Pét-Nat,sparkling white,89,1,1
+Albariño,white,59,1,1
+Moscato d’Asti,sparkling white,56,1,0
+Ariel Cabernet Sauvignon Dealcoholized,white,33,0,0
+Noughty Alcohol-Free Sparkling Chardonnay,sparkling white,83,0,1
+St. Regis Chardonnay De-Alcoholized Wine,sparkling white,33,0,1
+Pierre Zēro Rosé,sparkling rosé,79,0,1
+Hill Street Vin (Zero) Cabernet Sauvignon,red,66,0,1
+Sutter Home Fre Alcohol-Removed Chardonnay,white,37,0,1
+Luminara Non-Alcoholic Chardonnay,white,100,0,1
+Dom Pérignon,sparkling white,1000,1,1
+Domaine Bousquet Brut Rosé,sparkling rosé,75,1,1
+Freixenet 0.0% Sparkling Rosé,sparkling rosé,25,0,1
+Louis Latour Château Corton Grancey,red,625,1,0
+Chêne Bleu Abélard,red,344,1,1
+Dönnhoff Höllenpfad im Mühlenberg Riesling,white,319,1,1
+Château de Sancerre,white,116,1,0
+Ruinart Rosé,sparkling rosé,8370,1,1
+G. H. Mumm Grand Cordon Rosé,sparkling rosé,269,1,1
+Blandy’s Verdelho Colheita Madeira,fortified,154,1,0
+W. & J. Graham's Six Grapes Reserve,fortified,78,1,1
+Curatolo Arini Marsala Superiore Riserva Storica,fortified,158,1,0
+Schloss Sommerau Non-alcoholic pink wine,sparkling rosé,20,0,1
+Vina Le Classic Petillant sparkling,sparkling white,45,0,0
+Belle & Co Alcohol Free Sparkling Brut,sparkling white,38,0,1
+Torres Miguel Natureo Free Blanco,white,41,0,1
+Eisberg Alcohol Free Wine Sauvignon Blanc,white,27,0,0
+Chateau Diana Zero-Alcohol,red,33,0,1
+Stella Rosa Peach Alcohol-Free,red,41,0,1
