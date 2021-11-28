@@ -194,6 +194,8 @@ def interview_user():
         user_age_raw = input("Enter your age: ")
         try:
             user_age = int(user_age_raw)
+            if user_age <= 0:
+                raise ValueError()
         except ValueError:
             print("Incorrect value!")
         else:
