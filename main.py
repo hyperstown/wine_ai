@@ -1,6 +1,8 @@
 import re
+import operator
 from datetime import datetime
-#from models import Wine
+
+from models import Wine
 
 WINES = [
     { "name": "red", "score": 0 },
@@ -44,7 +46,7 @@ def get_price_range(price_range):
 
     
 
-def user_interview():
+def interview_user():
 
     # Control questions
 
@@ -93,7 +95,7 @@ def user_interview():
             print("2 - Noon")
             print("3 - Afternoon")
             print("4 - Evening")
-            time_of_day = input("Select:")
+            time_of_day = input("Select: ")
             if time_of_day == "1":
                 daytime = "Morning"
                 break
@@ -136,8 +138,10 @@ def user_interview():
             break
 
         price_range_tuple = get_price_range(price_range)
-        if not price_range_tuple:
-            print("Incorrect price range:", price_range)
+        if price_range_tuple:
+            break
+        print("Incorrect price range:", price_range)
+        
 
     
     # Type of meeting
@@ -150,7 +154,7 @@ def user_interview():
         print("3 - Friends")
         print("4 - Picnic")
         print("5 - Drinks")
-        type_of_meeting = input("Select:")
+        type_of_meeting = input("Select: ")
         if type_of_meeting == "1":
             WINES[0]["score"] += 2
             break
@@ -193,10 +197,120 @@ def user_interview():
         WINES[2]["score"] += 1
         WINES[4]["score"] += 1
 
-    print(WINES)
+    # For dish 
+
+    while True:
+        print("Select type of dish you wish to consume with your wine")
+        print("Choices:")
+        print("1 - Red meat")
+        print("2 - Poultry")
+        print("3 - Pasta")
+        print("4 - Fish")
+        print("5 - Pork")
+        print("6 - Barbecue")
+        print("7 - Seafood:")
+        print("8 - Salad")
+        print("9 - Dessert")
+        print("10 - Appetizer and snacks")
+        type_of_meeting = input("Select: ")
+        if type_of_meeting == "1":
+            # Red - 5 points
+            # Sparkling rosé - 3 points
+            WINES[0]["score"] += 5
+            WINES[3]["score"] += 3
+            break
+        elif type_of_meeting == "2":
+            # White - 4 points
+            # Red - 2 points
+            WINES[2]["score"] += 4
+            WINES[0]["score"] += 2
+            break
+        elif type_of_meeting == "3":
+            # White - 4 points
+            # Red - 3 points
+            WINES[2]["score"] += 4
+            WINES[0]["score"] += 3
+            break
+        elif type_of_meeting == "4":
+            # White - 4 points
+            # Sparkling white - 3 points
+            WINES[2]["score"] += 4
+            WINES[1]["score"] += 3
+            break
+        elif type_of_meeting == "5":
+            # Sparkling white - 4 points
+            # White - 3 points
+            WINES[1]["score"] += 4
+            WINES[2]["score"] += 3
+            break
+        elif type_of_meeting == "6":
+            # Red - 5 points
+            WINES[0]["score"] += 5
+            break
+        elif type_of_meeting == "7":
+            # Sparkling white - 4 points
+            # White - 3 points
+            # Sparkling rosé  - 2 points
+            WINES[1]["score"] += 4
+            WINES[2]["score"] += 3
+            WINES[3]["score"] += 2
+            break
+        elif type_of_meeting == "8":
+            # White - 4 points
+            # Sparkling white  - 3 points
+            WINES[2]["score"] += 4
+            WINES[1]["score"] += 3
+            break
+        elif type_of_meeting == "9":
+            # Fortified - 5 points
+            # Sparkling rosé  - 4 points
+            # Sparkling white  - 3 points
+            WINES[4]["score"] += 5
+            WINES[3]["score"] += 3
+            WINES[1]["score"] += 3
+            break
+        elif type_of_meeting == "10":
+            # Fortified - 4 points
+            # White - 3 points
+            # Sparkling rosé - 3 points
+            WINES[4]["score"] += 4
+            WINES[2]["score"] += 3
+            WINES[3]["score"] += 3
+            break
+        else:
+            print("Incorrect choice")
+    return {
+        "is_vegan" : is_vegan,
+        "non_alcoholic_wines": non_alcoholic_wines,
+        "price_range": price_range_tuple
+    }
+
+
+def get_best_wine(preferences):
+    WINES.sort(key=operator.itemgetter('score'), reverse=True)
+
+    if preferences['price_range']:
+        qs = Wine.objects.original.filter(
+            Wine.price.between(preferences['price_range'][0], preferences['price_range'][1]), 
+            type=WINES[0]["name"]
+        ).order_by("-price")
+
+    qs = Wine.objects.original.filter(
+        type=WINES[0]["name"]
+    ).order_by("-price")
+
+    print(qs)
+    
+
 
 def main():
-    user_interview()
+    preferences = interview_user()
+
+    if not preferences:
+        return 0
+    print(WINES)
+
+    return 0
 
 # Business    - red            - 2 points
 # Relatives    - white            - 2 points

@@ -92,6 +92,10 @@ class Manager():
     def raw(self):
         pass
 
+    @property
+    def original(self):
+        return self.session.query(self.model)
+
     def values_list(self):
         v_list = []
         qs = self.session.query(self.model).all()
