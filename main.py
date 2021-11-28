@@ -29,6 +29,21 @@ def re_input(question):
     answer = input(question)
     return bool(re.search("[JjSsYy]+", answer))
 
+def get_price_range(price_range):
+    range_list = price_range.split('-')
+    if len(range_list) != 2:
+        return () # empty tuple
+
+    try:
+        min_price = int(range_list[0])
+        max_price = int(range_list[1])
+    except ValueError:
+        return () # could not convet to int
+    else:
+        return (min_price, max_price)
+
+    
+
 def user_interview():
 
     # Control questions
@@ -94,6 +109,7 @@ def user_interview():
             else:
                 print("Incorrect choice")
 
+
     if daytime == "Morning":
         WINES[2]["score"] += 2
         WINES[1]["score"] += 2
@@ -103,14 +119,90 @@ def user_interview():
         WINES[3]["score"] += 2
         WINES[1]["score"] += 1
     elif daytime == "Afternoon":
-        WINES[3]["score"] += 2
-        WINES[1]["score"] += 1
+        WINES[4]["score"] += 2
+        WINES[2]["score"] += 1
+    elif daytime == "Evening":
+        WINES[0]["score"] += 2
+        WINES[3]["score"] += 1
                 
+
+    # Price range
+    while True:
+        print("Specify your price range in format 'dd-dd' for example '100-500'")
+        print("If you don't care just hit enter")
+        price_range =  input("Range: ")
+        if not price_range:
+            price_range_tuple = ()
+            break
+
+        price_range_tuple = get_price_range(price_range)
+        if not price_range_tuple:
+            print("Incorrect price range:", price_range)
+
+    
+    # Type of meeting
+
+    while True:
+        print("Select type of meeting")
+        print("Choices:")
+        print("1 - Business")
+        print("2 - Relatives")
+        print("3 - Friends")
+        print("4 - Picnic")
+        print("5 - Drinks")
+        type_of_meeting = input("Select:")
+        if type_of_meeting == "1":
+            WINES[0]["score"] += 2
+            break
+        elif type_of_meeting == "2":
+            WINES[2]["score"] += 2
+            break
+        elif type_of_meeting == "3":
+            WINES[1]["score"] += 2
+            break
+        elif type_of_meeting == "4":
+            WINES[3]["score"] += 2
+            break
+        elif type_of_meeting == "5":
+            WINES[4]["score"] += 2
+            break
+        else:
+            print("Incorrect choice")
+    
+
+    # User age
+
+    while True:
+        user_age_raw = input("Enter your age: ")
+        try:
+            user_age = int(user_age_raw)
+        except ValueError:
+            print("Incorrect value!")
+        else:
+            if user_age < 18:
+                print("You lied about being an adult earlier!")
+                return {}
+            break
+    
+    if user_age in range(18, 34):
+        WINES[1]["score"] += 1
+        WINES[3]["score"] += 1
+    elif user_age in range(35, 54):
+        WINES[0]["score"] += 1
+    else:
+        WINES[2]["score"] += 1
+        WINES[4]["score"] += 1
 
     print(WINES)
 
 def main():
     user_interview()
+
+# Business    - red            - 2 points
+# Relatives    - white            - 2 points
+# Friends    - sparkling white    - 2 points
+# Picnic        - sparkling rosé    - 2 points
+# Drinks        - fortified        - 2 points
 
 
 #     0{ "name": "red", "score": 0 },
@@ -118,11 +210,6 @@ def main():
 #     2{ "name": "white", "score": 0 },
 #     3{ "name": "sparkling rosé", "score": 0 },
 #     4{ "name": "fortified", "score": 0 },
-
-
-# Afternoon:
-# fortified         - 2 points
-# white            - 1 point
 
 
 
