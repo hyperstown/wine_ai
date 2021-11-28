@@ -4,13 +4,22 @@ from datetime import datetime
 
 from models import Wine
 
+# WINES = [
+#     { "name": "red", "score": 0 },
+#     { "name": "sparkling white", "score": 0 },
+#     { "name": "white", "score": 0 },
+#     { "name": "sparkling rosé", "score": 0 },
+#     { "name": "fortified", "score": 0 },
+# ]
+
 WINES = [
-    { "name": "red", "score": 0 },
-    { "name": "sparkling white", "score": 0 },
-    { "name": "white", "score": 0 },
-    { "name": "sparkling rosé", "score": 0 },
-    { "name": "fortified", "score": 0 },
+    {'name': 'red', 'score': 10}, 
+    {'name': 'sparkling white', 'score': 3}, 
+    {'name': 'white', 'score': 2}, 
+    {'name': 'sparkling rosé', 'score': 6}, 
+    {'name': 'fortified', 'score': 0}
 ]
+
 
 AUTO_TIME_DETECT = False
 
@@ -26,9 +35,9 @@ def detect_time_of_the_day():
         return 'Evening' # technically night xd
 
 
-def re_input(question):
+def re_input(prompt):
     """ Returns True if answer matches 'yes' else returns False """
-    answer = input(question)
+    answer = input(prompt)
     return bool(re.search("[JjSsYy]+", answer))
 
 def get_price_range(price_range):
@@ -54,6 +63,11 @@ def interview_user():
     non_alcoholic_wines = re_input("Are you interested in non alcoholic wines [Y/n] ")
     if not is_adult and not non_alcoholic_wines:
         return {} # exits program
+
+    alcoholic_wines = re_input("Are you interested in alcoholic wines [Y/n] ")
+    if not alcoholic_wines and not non_alcoholic_wines:
+        print("No wines can satisfy those criteria")
+        return {} # exits program, like what can I give you? Alcohol bad, No alcohol also bad.
     
     is_drunk = re_input("Are you drunk?  [Y/n] ")
 
@@ -281,53 +295,78 @@ def interview_user():
             print("Incorrect choice")
     return {
         "is_vegan" : is_vegan,
+        "alcoholic_wines": alcoholic_wines,
         "non_alcoholic_wines": non_alcoholic_wines,
         "price_range": price_range_tuple
     }
 
+def drunk_preferences(alcoholic_wines, non_alcoholic_wines):
+    """
+    alcoholic_wines=True, non_alcoholic_wines=False # returns True
+    alcoholic_wines=False, non_alcoholic_wines=True # returns False
+
+    1 with 0 # true
+    0 with 1 # false
+    """
+    return bool((alcoholic_wines - non_alcoholic_wines) + 1)
 
 def get_best_wine(preferences):
     WINES.sort(key=operator.itemgetter('score'), reverse=True)
 
+    wine_filter = {
+        "type": WINES[0]["name"]
+    }
+
+    if preferences["is_vegan"]:
+        wine_filter["is_vegan"] = preferences["is_vegan"]
+
+    # if both are True no filter
+    if preferences['alcoholic_wines'] ^ preferences['non_alcoholic_wines']:
+        wine_filter['is_alcoholic'] = drunk_preferences(
+            preferences['alcoholic_wines'], preferences['non_alcoholic_wines']
+        )
+
+    # if price range is specified filter that too.
     if preferences['price_range']:
-        qs = Wine.objects.original.filter(
+        qs = Wine.objects.filter( **wine_filter).filter(
             Wine.price.between(preferences['price_range'][0], preferences['price_range'][1]), 
-            type=WINES[0]["name"]
-        ).order_by("-price")
+        ).order_by("price")
 
-    qs = Wine.objects.original.filter(
-        type=WINES[0]["name"]
-    ).order_by("-price")
+        if qs.count() == 0:
+            qs = Wine.objects.filter(type=WINES[0]["name"]).order_by("price")
+            if qs.count() == 0:
+                print("Something went wrong!")
+                # print(wine_filter)
+                return None
+            
+            show_all = re_input("No wine in current price range. Ignore limit? [Y/n] ")
+            if not show_all:
+                return None
+            
+    else:
+        qs = Wine.objects.original.filter(**wine_filter).order_by("price")
 
-    print(qs)
     
-
+    print("Recommended wine")
+    wine = qs[-1]
+    print("Name:", wine.name)
+    print("Price:", wine.price, "PLN")
+    print("Type:", wine.type)
+    return None
+    
 
 def main():
     preferences = interview_user()
 
     if not preferences:
         return 0
-    print(WINES)
+    
+    get_best_wine(preferences)
+    #print(WINES)
 
     return 0
-
-# Business    - red            - 2 points
-# Relatives    - white            - 2 points
-# Friends    - sparkling white    - 2 points
-# Picnic        - sparkling rosé    - 2 points
-# Drinks        - fortified        - 2 points
-
-
-#     0{ "name": "red", "score": 0 },
-#     1{ "name": "sparkling white", "score": 0 },
-#     2{ "name": "white", "score": 0 },
-#     3{ "name": "sparkling rosé", "score": 0 },
-#     4{ "name": "fortified", "score": 0 },
-
 
 
 if __name__ == '__main__':
     main()
 
-# {'name': 'Lambrusco', 'type': 'red', 'price': 20, 'is_alcoholic': 1, 'is_vegan': 1}

@@ -1,6 +1,7 @@
 import operator
+from models import Wine
 
-wines = [
+WINES = [
     {'name': 'red', 'score': 10}, 
     {'name': 'sparkling white', 'score': 3}, 
     {'name': 'white', 'score': 2}, 
@@ -9,6 +10,20 @@ wines = [
 ]
 
 
-wines.sort(key=operator.itemgetter('score'), reverse=True)
+WINES.sort(key=operator.itemgetter('score'), reverse=True)
 
-print(wines[0])
+preferences = {
+    "is_vegan" : 0,
+    "non_alcoholic_wines": 1,
+    "alcoholic_wines": 1,
+    "price_range": (1, 70000)
+}
+
+
+#     0{ "name": "red", "score": 0 },
+#     1{ "name": "sparkling white", "score": 0 },
+#     2{ "name": "white", "score": 0 },
+#     3{ "name": "sparkling rosé", "score": 0 },
+#     4{ "name": "fortified", "score": 0 },
+
+# {'name': 'Lambrusco', 'type': 'red', 'price': 20, 'is_alcoholic': 1, 'is_vegan': 1}
