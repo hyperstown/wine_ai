@@ -4,20 +4,12 @@ from datetime import datetime
 
 from models import Wine
 
-# WINES = [
-#     { "name": "red", "score": 0 },
-#     { "name": "sparkling white", "score": 0 },
-#     { "name": "white", "score": 0 },
-#     { "name": "sparkling rosé", "score": 0 },
-#     { "name": "fortified", "score": 0 },
-# ]
-
 WINES = [
-    {'name': 'red', 'score': 10}, 
-    {'name': 'sparkling white', 'score': 3}, 
-    {'name': 'white', 'score': 2}, 
-    {'name': 'sparkling rosé', 'score': 6}, 
-    {'name': 'fortified', 'score': 0}
+    { "name": "red", "score": 0 },
+    { "name": "sparkling white", "score": 0 },
+    { "name": "white", "score": 0 },
+    { "name": "sparkling rosé", "score": 0 },
+    { "name": "fortified", "score": 0 },
 ]
 
 
