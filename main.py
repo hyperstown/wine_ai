@@ -336,7 +336,7 @@ def get_best_wine(preferences):
                 return None
             
     else:
-        qs = Wine.objects.original.filter(**wine_filter).order_by("price")
+        qs = Wine.objects.filter(**wine_filter).order_by("price")
 
     
     print("Recommended wine")
