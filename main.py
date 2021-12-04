@@ -6,9 +6,9 @@ from models import Wine
 
 WINES = [
     { "name": "red", "score": 0 },
-    { "name": "sparkling white", "score": 0 },
+    { "name": "sparkling", "score": 0 },
     { "name": "white", "score": 0 },
-    { "name": "sparkling rosé", "score": 0 },
+    { "name": "rosé", "score": 0 },
     { "name": "fortified", "score": 0 },
 ]
 
@@ -49,9 +49,31 @@ def get_price_range(price_range):
 
 def interview_user():
 
-    # Control questions
+    # User age
 
-    is_adult = re_input("Are you an adult? [Y/n] ")
+    while True:
+        user_age_raw = input("Please specify your age: ")
+        try:
+            user_age = int(user_age_raw)
+            if user_age <= 0:
+                raise ValueError()
+        except ValueError:
+            print("Incorrect value!")
+        else:
+            is_adult = user_age < 18
+            break
+    
+    if user_age in range(18, 34):
+        WINES[1]["score"] += 1
+        WINES[3]["score"] += 1
+    elif user_age in range(35, 54):
+        WINES[0]["score"] += 1
+    else:
+        WINES[2]["score"] += 1
+        WINES[4]["score"] += 1
+
+    # Control questions
+    
     non_alcoholic_wines = re_input("Are you interested in non alcoholic wines [Y/n] ")
     if not is_adult and not non_alcoholic_wines:
         return {} # exits program
@@ -180,30 +202,6 @@ def interview_user():
             print("Incorrect choice")
     
 
-    # User age
-
-    while True:
-        user_age_raw = input("Enter your age: ")
-        try:
-            user_age = int(user_age_raw)
-            if user_age <= 0:
-                raise ValueError()
-        except ValueError:
-            print("Incorrect value!")
-        else:
-            if user_age < 18:
-                print("You lied about being an adult earlier!")
-                return {}
-            break
-    
-    if user_age in range(18, 34):
-        WINES[1]["score"] += 1
-        WINES[3]["score"] += 1
-    elif user_age in range(35, 54):
-        WINES[0]["score"] += 1
-    else:
-        WINES[2]["score"] += 1
-        WINES[4]["score"] += 1
 
     # For dish 
 
@@ -223,7 +221,7 @@ def interview_user():
         type_of_meeting = input("Select: ")
         if type_of_meeting == "1":
             # Red - 5 points
-            # Sparkling rosé - 3 points
+            # Rosé - 3 points
             WINES[0]["score"] += 5
             WINES[3]["score"] += 3
             break
@@ -241,12 +239,12 @@ def interview_user():
             break
         elif type_of_meeting == "4":
             # White - 4 points
-            # Sparkling white - 3 points
+            # Sparkling - 3 points
             WINES[2]["score"] += 4
             WINES[1]["score"] += 3
             break
         elif type_of_meeting == "5":
-            # Sparkling white - 4 points
+            # Sparkling - 4 points
             # White - 3 points
             WINES[1]["score"] += 4
             WINES[2]["score"] += 3
@@ -256,23 +254,23 @@ def interview_user():
             WINES[0]["score"] += 5
             break
         elif type_of_meeting == "7":
-            # Sparkling white - 4 points
+            # Sparkling - 4 points
             # White - 3 points
-            # Sparkling rosé  - 2 points
+            # Rosé  - 2 points
             WINES[1]["score"] += 4
             WINES[2]["score"] += 3
             WINES[3]["score"] += 2
             break
         elif type_of_meeting == "8":
             # White - 4 points
-            # Sparkling white  - 3 points
+            # Sparkling  - 3 points
             WINES[2]["score"] += 4
             WINES[1]["score"] += 3
             break
         elif type_of_meeting == "9":
             # Fortified - 5 points
-            # Sparkling rosé  - 4 points
-            # Sparkling white  - 3 points
+            # Rosé  - 4 points
+            # Sparkling  - 3 points
             WINES[4]["score"] += 5
             WINES[3]["score"] += 3
             WINES[1]["score"] += 3
@@ -280,7 +278,7 @@ def interview_user():
         elif type_of_meeting == "10":
             # Fortified - 4 points
             # White - 3 points
-            # Sparkling rosé - 3 points
+            # Rosé - 3 points
             WINES[4]["score"] += 4
             WINES[2]["score"] += 3
             WINES[3]["score"] += 3

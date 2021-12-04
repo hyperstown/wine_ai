@@ -3,9 +3,9 @@ from models import Wine
 
 WINES = [
     {'name': 'red', 'score': 10}, 
-    {'name': 'sparkling white', 'score': 3}, 
+    {'name': 'sparkling', 'score': 3}, 
     {'name': 'white', 'score': 2}, 
-    {'name': 'sparkling rosé', 'score': 6}, 
+    {'name': 'rosé', 'score': 6}, 
     {'name': 'fortified', 'score': 0}
 ]
 
@@ -21,9 +21,9 @@ preferences = {
 
 
 #     0{ "name": "red", "score": 0 },
-#     1{ "name": "sparkling white", "score": 0 },
+#     1{ "name": "sparkling", "score": 0 },
 #     2{ "name": "white", "score": 0 },
-#     3{ "name": "sparkling rosé", "score": 0 },
+#     3{ "name": "rosé", "score": 0 },
 #     4{ "name": "fortified", "score": 0 },
 
 # {'name': 'Lambrusco', 'type': 'red', 'price': 20, 'is_alcoholic': 1, 'is_vegan': 1}
