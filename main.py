@@ -60,7 +60,7 @@ def interview_user():
         except ValueError:
             print("Incorrect value!")
         else:
-            is_adult = user_age < 18
+            is_adult = user_age > 18
             break
     
     if user_age in range(18, 34):
@@ -348,7 +348,10 @@ def get_best_wine(preferences):
     
 
 def main():
-    preferences = interview_user()
+    try:
+        preferences = interview_user()
+    except KeyboardInterrupt:
+        return 0
 
     if not preferences:
         return 0
