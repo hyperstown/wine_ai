@@ -30,7 +30,7 @@ def detect_time_of_the_day():
 def re_input(prompt):
     """ Returns True if answer matches 'yes' else returns False """
     answer = input(prompt)
-    return bool(re.search("[JjSsYy]+", answer))
+    return bool(re.search("[JjSsYy]+|^$", answer))
 
 def get_price_range(price_range):
     range_list = price_range.split('-')
