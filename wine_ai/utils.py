@@ -25,7 +25,7 @@ def print_debug(*values):
     elif DEBUG:
         print("[DEBUG]", *values)
 
-def update_score(wine, score_increment=1):
+def increment_score(wine, score_increment=1):
     """ Increment wine score """
     if isinstance(wine, int):
         WINES[wine]["score"] += score_increment

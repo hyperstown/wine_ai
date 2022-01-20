@@ -11,7 +11,6 @@ from database.init_db import init_now
 
 from wine_ai.utils import *
 
-# pyright: reportGeneralTypeIssues=false
 class WineHelper(KnowledgeEngine):
 
     def get_best_wine(self):
@@ -86,19 +85,19 @@ class WineHelper(KnowledgeEngine):
     @Rule(Fact(user_age=P(lambda x: x >= 18) & P(lambda x: x <= 34)))
     def user_young(self):
         print_debug("user_young")
-        update_score('sparkling')
-        update_score('rosé')
+        increment_score('sparkling')
+        increment_score('rosé')
     
     @Rule(Fact(user_age=P(lambda x: x >= 35) & P(lambda x: x <= 54)))
     def middle_age_young(self):
         print_debug("user_young")
-        update_score('red')
+        increment_score('red')
 
     @Rule(Fact(user_age=P(lambda x: x > 54)))
     def user_old(self):
         print_debug("user_old")
-        update_score('white')
-        update_score('fortified')
+        increment_score('white')
+        increment_score('fortified')
 
     @Rule(NOT(OR(Fact(is_adult=True), Fact(non_alcoholic_wines=True))))
     def user_not_qualified_age_perf(self):
@@ -140,146 +139,146 @@ class WineHelper(KnowledgeEngine):
     @Rule(Fact(favorite_wine=1))
     def fav_wine1(self):
         print_debug("fav_wine1 - red")
-        update_score("red", 4)
+        increment_score("red", 4)
 
     @Rule(Fact(favorite_wine=2))
     def fav_wine2(self):
         print_debug("fav_wine2 - sparkling")
-        update_score("sparkling", 4)
+        increment_score("sparkling", 4)
 
     @Rule(Fact(favorite_wine=3))
     def fav_wine3(self):
         print_debug("fav_wine3 - white")
-        update_score("white", 4)
+        increment_score("white", 4)
 
     @Rule(Fact(favorite_wine=4))
     def fav_wine4(self):
         print_debug("fav_wine4 - rosé")
-        update_score("rosé", 4)
+        increment_score("rosé", 4)
 
     @Rule(Fact(favorite_wine=5))
     def fav_wine5(self):
         print_debug("fav_wine5 - fortified")
-        update_score("fortified", 4)
+        increment_score("fortified", 4)
 
 
     @Rule(Fact(daytime="Morning"))
     def daytime_morning(self):
         print_debug("daytime - Morning")
-        update_score('white', 2) # += 2
-        update_score('sparkling', 2) # += 2
+        increment_score('white', 2) # += 2
+        increment_score('sparkling', 2) # += 2
 
     @Rule(AND(Fact(daytime="Morning"), Fact(favorite_wine=1)))
     def daytime_morning_and_fav1(self):
         print_debug("daytime - Morning - and fav type 1")
-        update_score('red') # += 1
+        increment_score('red') # += 1
 
     @Rule(Fact(daytime="Noon"))
     def daytime_noon(self):
         print_debug("daytime - Noon")
-        update_score('rosé', 2) # += 2
-        update_score('sparkling') # += 1
+        increment_score('rosé', 2) # += 2
+        increment_score('sparkling') # += 1
 
     @Rule(Fact(daytime="Afternoon"))
     def daytime_afternoon(self):
         print_debug("daytime - Afternoon")
-        update_score('fortified', 2) # += 2
-        update_score('white') # += 1
+        increment_score('fortified', 2) # += 2
+        increment_score('white') # += 1
 
     @Rule(Fact(daytime="Evening"))
     def daytime_evening(self):
         print_debug("daytime - Evening")
-        update_score('red', 2) # += 2
-        update_score('rosé') # += 1
+        increment_score('red', 2) # += 2
+        increment_score('rosé') # += 1
 
 
     @Rule(Fact(type_of_meeting="1"))
     def meeting1(self):
         print_debug("Type of meeting 1")
-        update_score('red', 2) # += 2
+        increment_score('red', 2) # += 2
 
     @Rule(Fact(type_of_meeting="2"))
     def meeting2(self):
         print_debug("Type of meeting 2")
-        update_score('white', 2) # += 2
+        increment_score('white', 2) # += 2
 
     @Rule(Fact(type_of_meeting="3"))
     def meeting3(self):
         print_debug("Type of meeting 3")
-        update_score('sparkling', 2) # += 2
+        increment_score('sparkling', 2) # += 2
 
     @Rule(Fact(type_of_meeting="4"))
     def meeting4(self):
         print_debug("Type of meeting 4")
-        update_score('rosé', 2) # += 2
+        increment_score('rosé', 2) # += 2
 
     @Rule(Fact(type_of_meeting="5"))
     def meeting5(self):
         print_debug("Type of meeting 5")
-        update_score('fortified', 2) # += 2
+        increment_score('fortified', 2) # += 2
 
     
     @Rule(Fact(type_of_dish="1"))
     def dish1(self):
         print_debug("Type of dish 1")
-        update_score('red', 5) # += 5
-        update_score('rosé', 3) # += 3
+        increment_score('red', 5) # += 5
+        increment_score('rosé', 3) # += 3
 
     @Rule(Fact(type_of_dish="2"))
     def dish2(self):
         print_debug("Type of dish 2")
-        update_score('white', 4) # += 4
-        update_score('red', 2) # += 2
+        increment_score('white', 4) # += 4
+        increment_score('red', 2) # += 2
 
     @Rule(Fact(type_of_dish="3"))
     def dish3(self):
         print_debug("Type of dish 3")
-        update_score('white', 4) # += 4
-        update_score('red', 3) # += 3  
+        increment_score('white', 4) # += 4
+        increment_score('red', 3) # += 3  
 
     @Rule(Fact(type_of_dish="4"))
     def dish4(self):
         print_debug("Type of dish 4")
-        update_score('white', 4) # += 4
-        update_score('sparkling', 3) # += 3
+        increment_score('white', 4) # += 4
+        increment_score('sparkling', 3) # += 3
 
     @Rule(Fact(type_of_dish="5"))
     def dish5(self):
         print_debug("Type of dish 5")
-        update_score('sparkling', 4) # += 4
-        update_score('white', 3) # += 3
+        increment_score('sparkling', 4) # += 4
+        increment_score('white', 3) # += 3
 
     @Rule(Fact(type_of_dish="6"))
     def dish6(self):
         print_debug("Type of dish 6")
-        update_score('red', 5) # += 5  
+        increment_score('red', 5) # += 5  
 
     @Rule(Fact(type_of_dish="7"))
     def dish7(self):
         print_debug("Type of dish 7")
-        update_score('sparkling', 4) # += 4
-        update_score('white', 3) # += 3
-        update_score('rosé', 2) # += 2
+        increment_score('sparkling', 4) # += 4
+        increment_score('white', 3) # += 3
+        increment_score('rosé', 2) # += 2
     
     @Rule(Fact(type_of_dish="8"))
     def dish8(self):
         print_debug("Type of dish 8")
-        update_score('white', 4) # += 4
-        update_score('sparkling', 3) # += 3
+        increment_score('white', 4) # += 4
+        increment_score('sparkling', 3) # += 3
 
     @Rule(Fact(type_of_dish="9"))
     def dish9(self):
         print_debug("Type of dish 9")
-        update_score('fortified', 5) # += 5
-        update_score('rosé', 3) # += 3
-        update_score('sparkling', 3) # += 3
+        increment_score('fortified', 5) # += 5
+        increment_score('rosé', 3) # += 3
+        increment_score('sparkling', 3) # += 3
 
     @Rule(Fact(type_of_dish="10"))
     def dish10(self):
         print_debug("Type of dish 10")
-        update_score('fortified', 4) # += 4
-        update_score('white', 3) # += 3
-        update_score('rosé', 3) # += 3
+        increment_score('fortified', 4) # += 4
+        increment_score('white', 3) # += 3
+        increment_score('rosé', 3) # += 3
 
 
 
@@ -322,8 +321,6 @@ def main():
             engine.run()
         except KeyboardInterrupt:
             print("\nExiting...")
-
-        # TODO change update_score to increment_score
 
 
 if __name__ == '__main__':
