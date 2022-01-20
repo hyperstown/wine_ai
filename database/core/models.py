@@ -1,7 +1,7 @@
 """ Django-like model managemnet """
 
 from sqlalchemy import Sequence
-from core import settings
+from . import settings
 from sqlalchemy import (
     Column, Integer, String, ForeignKey, Boolean, Float
 )

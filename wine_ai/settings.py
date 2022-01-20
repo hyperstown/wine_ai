@@ -1,0 +1,4 @@
+DEBUG = True
+REMOTE_DEBUGGING=False
+
+AUTO_TIME_DETECT = False

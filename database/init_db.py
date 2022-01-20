@@ -1,6 +1,6 @@
 import csv
-from core.migrations import migrate
-from models import Wine
+from .core.migrations import migrate
+from .models import Wine
 
 
 def convert_csv(dict_list):
@@ -12,7 +12,7 @@ def convert_csv(dict_list):
         result.append(i)
     return result
 
-def main():
+def init_now():
     migrate()
     with open('wine_db.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -22,11 +22,5 @@ def main():
             new_wine = Wine(**r)
             new_wine.save()
         print("Done!")
-
-
-
-
-if __name__ == '__main__':
-    main()
 
 # {'name': 'Lambrusco', 'type': 'red', 'price': 20, 'is_alcoholic': 1, 'is_vegan': 1}

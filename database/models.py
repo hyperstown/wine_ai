@@ -1,4 +1,4 @@
-from core import models
+from .core import models
 
 
 class Wine(models.Base, models.BaseModelMixin):
