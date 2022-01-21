@@ -157,7 +157,7 @@ def get_meeting_type():
 
 def get_dish_type():
     while True:
-        print("Select type of meeting")
+        print("Select type of dish")
         print("Choices:")
         print("1 - Red meat")
         print("2 - Poultry")
@@ -165,7 +165,7 @@ def get_dish_type():
         print("4 - Fish")
         print("5 - Pork")
         print("6 - Barbecue")
-        print("7 - Seafood:")
+        print("7 - Seafood")
         print("8 - Salad")
         print("9 - Dessert")
         print("10 - Appetizer and snacks")

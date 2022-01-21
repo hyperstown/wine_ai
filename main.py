@@ -11,6 +11,13 @@ from database.init_db import init_now
 
 from wine_ai.utils import *
 
+try:
+    from gui.main_window import render_window
+except ImportError:
+    def render_window(*args, **kwargs):
+        print("Could not import PyQt")
+
+
 class WineHelper(KnowledgeEngine):
 
     def get_best_wine(self):
