@@ -231,6 +231,9 @@ class MainWindow(QMainWindow):
 
         
         self.p6.pervious_button.clicked.connect(self.prev_page)
+        # TODO remove next button from last page
+        # add page when you specify price range
+        # remove prev button from the first page
 
         self.setCentralWidget(self.stacked_widget)
 
@@ -248,7 +251,7 @@ class MainWindow(QMainWindow):
     def determine_action(self, page_index):
         if page_index == 5:
             print("getting full data")
-            data = self.get_full_data()
+            data = self.get_full_data() # TODO format data
 
             self.p6.label2.setText(data.get("result", "No result"))
             
