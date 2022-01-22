@@ -17,6 +17,10 @@ $ pip install -r requirements.txt
 ```
 $ python main.py
 ```
+or
+```
+$ python main.py --no-gui
+```
 
 ## Run debug server:
 

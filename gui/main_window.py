@@ -305,8 +305,6 @@ class MainWindow(QMainWindow):
             "price_range": get_data_input(self.p6, many=True),
             **get_data_check_p1(self.p1)
         }
-
-        print(data)
         
         engine = WineHelperGUI(data)
         
