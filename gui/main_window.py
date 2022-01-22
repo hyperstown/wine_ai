@@ -160,13 +160,35 @@ class Widget5(WidgetFormMixin, QWidget):
 
         self.middle_layout = select_box_layout
 
-
 class Widget6(WidgetFormMixin, QWidget):
 
     def set_middle_layout(self):
         
+        self.label1 = QLabel(text="Specify price range")
+
+        select_box_layout = QHBoxLayout()
+        input_filed1 = QLineEdit()
+        input_filed1.setValidator(QIntValidator())
+        input_filed1.setMaxLength(6)
+        input_filed1.setFixedSize(120, 20)
+        input_filed2 = QLineEdit()
+        input_filed2.setValidator(QIntValidator())
+        input_filed2.setMaxLength(6)
+        input_filed2.setFixedSize(120, 20)
+
+        select_box_layout.addWidget(input_filed1)
+        select_box_layout.addWidget(input_filed2)
+
+        select_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.middle_layout = select_box_layout
+
+class Widget7(WidgetFormMixin, QWidget):
+
+    def set_middle_layout(self):
+        
         label1 = QLabel(text="Your information")
-        self.label2 = QLabel(text="User age: ")
+        self.label2 = QLabel(text="Fetching data...")
 
         select_box_layout = QVBoxLayout()
         select_box_layout.addWidget(label1)
@@ -204,6 +226,7 @@ class MainWindow(QMainWindow):
         self.p4 = Widget4(props)
         self.p5 = Widget5(props)
         self.p6 = Widget6(props)
+        self.p7 = Widget7(props)
 
         self.stacked_widget.addWidget(self.p1)
         self.stacked_widget.addWidget(self.p2)
@@ -211,6 +234,8 @@ class MainWindow(QMainWindow):
         self.stacked_widget.addWidget(self.p4)
         self.stacked_widget.addWidget(self.p5)
         self.stacked_widget.addWidget(self.p6)
+        self.stacked_widget.addWidget(self.p7)
+
 
         self.stacked_widget.currentChanged.connect(self.determine_action)
 
@@ -229,8 +254,12 @@ class MainWindow(QMainWindow):
         self.p5.next_button.clicked.connect(self.next_page)
         self.p5.pervious_button.clicked.connect(self.prev_page)
 
-        
+        self.p6.next_button.clicked.connect(self.next_page)        
         self.p6.pervious_button.clicked.connect(self.prev_page)
+
+        self.p7.next_button.clicked.connect(self.next_page)        
+        self.p7.pervious_button.clicked.connect(self.prev_page)
+
         # TODO remove next button from last page
         # add page when you specify price range
         # remove prev button from the first page
@@ -249,11 +278,15 @@ class MainWindow(QMainWindow):
             self.stacked_widget.setCurrentIndex(self.page_index)
             
     def determine_action(self, page_index):
-        if page_index == 5:
-            print("getting full data")
-            data = self.get_full_data() # TODO format data
+        if page_index == 6:
+            data = self.get_full_data()
 
-            self.p6.label2.setText(data.get("result", "No result"))
+            text = ''
+            if data.get('action', 'abort') == 'abort':
+                text += "Could not fetch wines from database.\n"
+            text += data.get('result', '')
+
+            self.p7.label2.setText(text)
             
 
 
@@ -265,9 +298,11 @@ class MainWindow(QMainWindow):
             "type_of_meeting": get_data_radio(self.p3),
             "type_of_dish": get_data_radio(self.p4),
             "favorite_wine": get_data_radio(self.p5),
-            "price_range": (),
+            "price_range": get_data_input(self.p6, many=True),
             **get_data_check_p1(self.p1)
         }
+
+        print(data)
         
         engine = WineHelperGUI(data)
         

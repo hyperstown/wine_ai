@@ -16,9 +16,23 @@ def get_data_check_p1(p1):
         "is_vegan": p1.check4.isChecked(),
 }
 
-def get_data_input(widget):
-    print("getting data input")
+def get_data_input(widget, many=False):
+    
+    data = []
+
     for child in widget.children():
         if isinstance(child, QLineEdit):
-            return int(child.text())
+            try:
+                if many:
+                    if child.text():
+                        data.append(int(child.text())) # meh
+                else:
+                    return int(child.text())
+            except ValueError:
+                if many:
+                    return tuple()
+                return -1
+    
+    if many:
+        return tuple(data)
     return -1

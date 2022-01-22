@@ -56,25 +56,25 @@ class WineHelper(KnowledgeEngine):
         increment_score('white')
         increment_score('fortified')
 
-    @Rule(NOT(OR(Fact(is_adult=True), Fact(non_alcoholic_wines=True))))
+    @Rule(OR(AND(Fact(is_adult=False), Fact(non_alcoholic_wines=False)), AND(Fact(is_adult=False), Fact(alcoholic_wines=True))))
     def user_not_qualified_age_perf(self):
         print_debug("user_not_qualified_age_perf")
         self.action = self.modify(
-            self.facts[self.action], action='abort', reason='Selected non alcoholic wine but user underage! Exiting the program'
+            self.facts[self.action], action='abort', reason='Selected non alcoholic wine but user underage!'
         ).__factid__
 
     @Rule(NOT(OR(Fact(alcoholic_wines=True), Fact(non_alcoholic_wines=True))))
     def impossible_criteria(self):
         print_debug("impossible_criteria")
         self.action = self.modify(
-            self.facts[self.action], action='abort', reason='Selected non alcoholic and alcoholic wines. Critera are invalid. Abort.'
+            self.facts[self.action], action='abort', reason='Selected non alcoholic and alcoholic wines. Critera are invalid.'
         ).__factid__
 
     @Rule(OR(Fact(is_drunk=True), Fact(non_alcoholic_wines=False)))
     def user_drunk(self):
         print_debug("user_drunk")
         self.action = self.modify(
-            self.facts[self.action], action='abort', reason='Selected alcoholic wine but user drunk! Exiting the program'
+            self.facts[self.action], action='abort', reason='Selected alcoholic wine but user drunk!'
         ).__factid__
 
     @Rule(Fact(is_vegan=True))
@@ -93,27 +93,27 @@ class WineHelper(KnowledgeEngine):
         self.preferences["non_alcoholic_wines"] = True
 
 
-    @Rule(Fact(favorite_wine=1))
+    @Rule(OR(Fact(favorite_wine=1), Fact(favorite_wine='red')))
     def fav_wine1(self):
         print_debug("fav_wine1 - red")
         increment_score("red", 4)
 
-    @Rule(Fact(favorite_wine=2))
+    @Rule(OR(Fact(favorite_wine=2), Fact(favorite_wine='sparkling')))
     def fav_wine2(self):
         print_debug("fav_wine2 - sparkling")
         increment_score("sparkling", 4)
 
-    @Rule(Fact(favorite_wine=3))
+    @Rule(OR(Fact(favorite_wine=3), Fact(favorite_wine='white')))
     def fav_wine3(self):
         print_debug("fav_wine3 - white")
         increment_score("white", 4)
 
-    @Rule(Fact(favorite_wine=4))
+    @Rule(OR(Fact(favorite_wine=4), Fact(favorite_wine='rosé')))
     def fav_wine4(self):
         print_debug("fav_wine4 - rosé")
         increment_score("rosé", 4)
 
-    @Rule(Fact(favorite_wine=5))
+    @Rule(OR(Fact(favorite_wine=5), Fact(favorite_wine='fortified')))
     def fav_wine5(self):
         print_debug("fav_wine5 - fortified")
         increment_score("fortified", 4)
@@ -149,88 +149,88 @@ class WineHelper(KnowledgeEngine):
         increment_score('rosé') # += 1
 
 
-    @Rule(Fact(type_of_meeting="1"))
+    @Rule(OR(Fact(type_of_meeting="1"), Fact(type_of_meeting="Business")))
     def meeting1(self):
         print_debug("Type of meeting 1")
         increment_score('red', 2) # += 2
 
-    @Rule(Fact(type_of_meeting="2"))
+    @Rule(OR(Fact(type_of_meeting="2"), Fact(type_of_meeting="Relatives")))
     def meeting2(self):
         print_debug("Type of meeting 2")
         increment_score('white', 2) # += 2
 
-    @Rule(Fact(type_of_meeting="3"))
+    @Rule(OR(Fact(type_of_meeting="3"), Fact(type_of_meeting="Friends")))
     def meeting3(self):
         print_debug("Type of meeting 3")
         increment_score('sparkling', 2) # += 2
 
-    @Rule(Fact(type_of_meeting="4"))
+    @Rule(OR(Fact(type_of_meeting="4"), Fact(type_of_meeting="Picnic")))
     def meeting4(self):
         print_debug("Type of meeting 4")
         increment_score('rosé', 2) # += 2
 
-    @Rule(Fact(type_of_meeting="5"))
+    @Rule(OR(Fact(type_of_meeting="5"), Fact(type_of_meeting="Drinks")))
     def meeting5(self):
         print_debug("Type of meeting 5")
         increment_score('fortified', 2) # += 2
 
-    
-    @Rule(Fact(type_of_dish="1"))
+    # dish rules    
+    @Rule(OR(Fact(type_of_dish="1"), Fact(type_of_dish="Red meat")))
     def dish1(self):
         print_debug("Type of dish 1")
         increment_score('red', 5) # += 5
         increment_score('rosé', 3) # += 3
 
-    @Rule(Fact(type_of_dish="2"))
+    @Rule(OR(Fact(type_of_dish="2"), Fact(type_of_dish="Poultry")))
     def dish2(self):
         print_debug("Type of dish 2")
         increment_score('white', 4) # += 4
         increment_score('red', 2) # += 2
 
-    @Rule(Fact(type_of_dish="3"))
+    @Rule(OR(Fact(type_of_dish="3"), Fact(type_of_dish="Pasta")))
     def dish3(self):
         print_debug("Type of dish 3")
         increment_score('white', 4) # += 4
         increment_score('red', 3) # += 3  
 
-    @Rule(Fact(type_of_dish="4"))
+    @Rule(OR(Fact(type_of_dish="4"), Fact(type_of_dish="Fish")))
     def dish4(self):
         print_debug("Type of dish 4")
         increment_score('white', 4) # += 4
         increment_score('sparkling', 3) # += 3
 
-    @Rule(Fact(type_of_dish="5"))
+    @Rule(OR(Fact(type_of_dish="5"), Fact(type_of_dish="Pork")))
     def dish5(self):
         print_debug("Type of dish 5")
         increment_score('sparkling', 4) # += 4
         increment_score('white', 3) # += 3
 
-    @Rule(Fact(type_of_dish="6"))
+    @Rule(OR(Fact(type_of_dish="6"), Fact(type_of_dish="Barbecue")))
     def dish6(self):
         print_debug("Type of dish 6")
         increment_score('red', 5) # += 5  
 
-    @Rule(Fact(type_of_dish="7"))
+    @Rule(OR(Fact(type_of_dish="7"), Fact(type_of_dish="Seafood")))
     def dish7(self):
         print_debug("Type of dish 7")
         increment_score('sparkling', 4) # += 4
         increment_score('white', 3) # += 3
         increment_score('rosé', 2) # += 2
     
-    @Rule(Fact(type_of_dish="8"))
+    @Rule(OR(Fact(type_of_dish="8"), Fact(type_of_dish="Salad")))
     def dish8(self):
         print_debug("Type of dish 8")
         increment_score('white', 4) # += 4
         increment_score('sparkling', 3) # += 3
 
-    @Rule(Fact(type_of_dish="9"))
+    @Rule(OR(Fact(type_of_dish="9"), Fact(type_of_dish="Dessert")))
     def dish9(self):
         print_debug("Type of dish 9")
         increment_score('fortified', 5) # += 5
         increment_score('rosé', 3) # += 3
         increment_score('sparkling', 3) # += 3
 
-    @Rule(Fact(type_of_dish="10"))
+    @Rule(OR(Fact(type_of_dish="10"), Fact(type_of_dish="Appetizer and snacks")))
     def dish10(self):
         print_debug("Type of dish 10")
         increment_score('fortified', 4) # += 4
