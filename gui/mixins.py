@@ -40,8 +40,11 @@ class WidgetFormMixin:
         
         v_layout.addLayout(self.middle_layout)
 
-        h_layout.addWidget(self.pervious_button)
-        h_layout.addWidget(self.next_button)
+        if not getattr(self, 'first_page', False):
+            h_layout.addWidget(self.pervious_button)
+        
+        if not getattr(self, 'last_page', False):
+            h_layout.addWidget(self.next_button)
         v_layout.addLayout(h_layout)
 
         v_layout.addWidget(exit_button)

@@ -37,6 +37,8 @@ class Property:
 
 class Widget1(WidgetFormMixin, QWidget):
 
+    first_page = True
+
     def set_middle_layout(self):
 
         # Page description
@@ -185,6 +187,8 @@ class Widget6(WidgetFormMixin, QWidget):
 
 class Widget7(WidgetFormMixin, QWidget):
 
+    last_page = True
+
     def set_middle_layout(self):
         
         label1 = QLabel(text="Your information")
@@ -257,7 +261,7 @@ class MainWindow(QMainWindow):
         self.p6.next_button.clicked.connect(self.next_page)        
         self.p6.pervious_button.clicked.connect(self.prev_page)
 
-        self.p7.next_button.clicked.connect(self.next_page)        
+        #self.p7.next_button.clicked.connect(self.next_page)        
         self.p7.pervious_button.clicked.connect(self.prev_page)
 
         # TODO remove next button from last page
