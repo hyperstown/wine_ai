@@ -1,7 +1,10 @@
 import re
+import operator
 from datetime import datetime
 from .settings import *
 from remote_debugger.debug_client import send_debug
+
+from database.models import Wine
 
 WINES = [
     { "name": "red", "score": 0 },
@@ -76,6 +79,45 @@ def get_price_range(price_range):
 
 
 # helpers - for now no need to put it in separate file.
+
+def get_best_wine(preferences, gui=False):
+        """ Fetches wine from database """
+        result = ""
+
+        WINES.sort(key=operator.itemgetter('score'), reverse=True)
+        wine_filter = {"type": WINES[0]["name"]}
+        if preferences["is_vegan"]:
+            wine_filter["is_vegan"] = preferences["is_vegan"]
+        # if both are True no filter
+        if preferences['alcoholic_wines'] ^ preferences['non_alcoholic_wines']:
+            wine_filter['is_alcoholic'] = drunk_preferences(
+                preferences['alcoholic_wines'], preferences['non_alcoholic_wines']
+            )
+        # if price range is specified filter that too.
+        if preferences['price_range']:
+            qs = Wine.objects.filter(**wine_filter).filter(
+                Wine.price.between(preferences['price_range'][0], preferences['price_range'][1]), 
+            ).order_by("price")
+            if qs.count() == 0:
+                qs = Wine.objects.filter(type=WINES[0]["name"]).order_by("price")
+                if qs.count() == 0:
+                    return "Something went wrong!"
+                    # print(wine_filter)
+                if not gui:
+                    show_all = re_input("No wine in current price range. Ignore limit? [Y/n] ")
+                    if not show_all:
+                        return result
+        else:
+            qs = Wine.objects.filter(**wine_filter).order_by("price")
+
+        if qs.count() == 0:
+            return "Could not find any wines with given criteria"
+        result = "Recommended wine:\n"
+        wine = qs[-1]
+        result += "Name: %s\n" % wine.name
+        result += "Price: %s PLN\n" % wine.price
+        result+= "Type: %s" % wine.type
+        return result
 
 def drunk_preferences(alcoholic_wines, non_alcoholic_wines):
     """

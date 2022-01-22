@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtCore import pyqtSlot, QRect, Qt, QCoreApplication
+from PyQt5.QtCore import Qt #,QCoreApplication, pyqtSlot, QRect
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QLabel, QPushButton, 
     QTextEdit, QComboBox, QVBoxLayout, QHBoxLayout, QMainWindow,
@@ -8,6 +8,10 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIntValidator
 
+from wine_ai.engine import WineHelperGUI
+
+from .mixins import WidgetFormMixin
+from .helpers import get_data_check_p1, get_data_radio, get_data_input
 
 class Property:
 
@@ -28,56 +32,6 @@ class Property:
     def center_window(self):
         self.center_horizontally()
         self.center_vertically()
-
-class WidgetFormMixin:
-
-    def __init__(self, props):
-        super().__init__()  # inherit init of QWidget
-        self.props = props
-        self.set_middle_layout()
-        self.view()
-
-    def view(self):
-
-        v_layout = QVBoxLayout()
-        h_layout = QHBoxLayout()
-        
-        # Page description 
-        # margin: left, top; width, height
-        if hasattr(self, 'label1'):
-            self.label1.setGeometry(QRect(0, 0, self.props.width, self.props.height // 3))
-            self.label1.setWordWrap(True) # allow word-wrap
-            self.label1.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        # next button
-        self.next_button = QPushButton(text="Next")
-        self.next_button.setToolTip("Next")
-        # prev button
-        self.pervious_button = QPushButton(text="Previous")
-        self.pervious_button.setToolTip("Previous")
-
-        # exit button
-        exit_button = QPushButton(text="Close")
-        exit_button.setToolTip("Exit window")
-        exit_button.clicked.connect(self.exit_window)
-
-
-        # add elements to the layout
-        if hasattr(self, 'label1'):
-            v_layout.addWidget(self.label1)
-        
-        v_layout.addLayout(self.middle_layout)
-
-        h_layout.addWidget(self.pervious_button)
-        h_layout.addWidget(self.next_button)
-        v_layout.addLayout(h_layout)
-
-        v_layout.addWidget(exit_button)
-        self.setLayout(v_layout)
-
-    @pyqtSlot()
-    def exit_window(self):
-        QCoreApplication.instance().quit()
 
 
 
@@ -189,7 +143,7 @@ class Widget5(WidgetFormMixin, QWidget):
 
     def set_middle_layout(self):
         
-        label = QLabel(text="Select your favorite wine:")
+        label = QLabel(text="Select your favorite type of wine:")
 
         select_box_layout = QVBoxLayout()
         select_box_layout.addWidget(label)
@@ -212,15 +166,13 @@ class Widget6(WidgetFormMixin, QWidget):
     def set_middle_layout(self):
         
         label1 = QLabel(text="Your information")
-        label2 = QLabel(text="User age: ")
+        self.label2 = QLabel(text="User age: ")
 
         select_box_layout = QVBoxLayout()
         select_box_layout.addWidget(label1)
         select_box_layout.addSpacing(10)
-        select_box_layout.addWidget(label2)
+        select_box_layout.addWidget(self.label2)
         select_box_layout.addSpacing(10)
-
-        
 
         select_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -246,40 +198,41 @@ class MainWindow(QMainWindow):
         self.stacked_widget = QStackedWidget()
 
 
-        p1 = Widget1(props)
-        p2 = Widget2(props)
-        p3 = Widget3(props)
-        p4 = Widget4(props)
-        p5 = Widget5(props)
-        p6 = Widget6(props)
+        self.p1 = Widget1(props)
+        self.p2 = Widget2(props)
+        self.p3 = Widget3(props)
+        self.p4 = Widget4(props)
+        self.p5 = Widget5(props)
+        self.p6 = Widget6(props)
 
-        self.stacked_widget.addWidget(p1)
-        self.stacked_widget.addWidget(p2)
-        self.stacked_widget.addWidget(p3)
-        self.stacked_widget.addWidget(p4)
-        self.stacked_widget.addWidget(p5)
-        self.stacked_widget.addWidget(p6)
+        self.stacked_widget.addWidget(self.p1)
+        self.stacked_widget.addWidget(self.p2)
+        self.stacked_widget.addWidget(self.p3)
+        self.stacked_widget.addWidget(self.p4)
+        self.stacked_widget.addWidget(self.p5)
+        self.stacked_widget.addWidget(self.p6)
+
+        self.stacked_widget.currentChanged.connect(self.determine_action)
 
 
-        p1.next_button.clicked.connect(self.next_page)
+        self.p1.next_button.clicked.connect(self.next_page)
 
-        p2.next_button.clicked.connect(self.next_page)
-        p2.pervious_button.clicked.connect(self.prev_page)
+        self.p2.next_button.clicked.connect(self.next_page)
+        self.p2.pervious_button.clicked.connect(self.prev_page)
 
-        p3.next_button.clicked.connect(self.next_page)
-        p3.pervious_button.clicked.connect(self.prev_page)
+        self.p3.next_button.clicked.connect(self.next_page)
+        self.p3.pervious_button.clicked.connect(self.prev_page)
 
-        p4.next_button.clicked.connect(self.next_page)
-        p4.pervious_button.clicked.connect(self.prev_page)
+        self.p4.next_button.clicked.connect(self.next_page)
+        self.p4.pervious_button.clicked.connect(self.prev_page)
 
-        p5.next_button.clicked.connect(self.next_page)
-        p5.pervious_button.clicked.connect(self.prev_page)
+        self.p5.next_button.clicked.connect(self.next_page)
+        self.p5.pervious_button.clicked.connect(self.prev_page)
 
-        p6.next_button.clicked.connect(self.next_page)
-        p6.pervious_button.clicked.connect(self.prev_page)
+        
+        self.p6.pervious_button.clicked.connect(self.prev_page)
 
         self.setCentralWidget(self.stacked_widget)
-        
 
 
     def next_page(self):
@@ -291,12 +244,42 @@ class MainWindow(QMainWindow):
         if self.page_index > 0:
             self.page_index -= 1
             self.stacked_widget.setCurrentIndex(self.page_index)
+            
+    def determine_action(self, page_index):
+        if page_index == 5:
+            print("getting full data")
+            data = self.get_full_data()
+
+            self.p6.label2.setText(data.get("result", "No result"))
+            
+
+
+    def get_full_data(self):
+
+        data = {
+            "user_age": get_data_input(self.p1),
+            "daytime": get_data_radio(self.p2),
+            "type_of_meeting": get_data_radio(self.p3),
+            "type_of_dish": get_data_radio(self.p4),
+            "favorite_wine": get_data_radio(self.p5),
+            "price_range": (),
+            **get_data_check_p1(self.p1)
+        }
+        
+        engine = WineHelperGUI(data)
+        
+        engine.reset()
+        engine.run()
+
+        return engine.result
+
+         
+                
         
 
-def render_window():
-    app = QApplication(sys.argv)
+def render_window(args=[]):
+    app = QApplication(args)
     screen = app.primaryScreen()
     w = MainWindow(screen, title="Wine AI")
     w.show()
     sys.exit(app.exec_())
-
