@@ -4,6 +4,10 @@ School project
 
 Suggest user a wine based on user preferences.
 
+## Requirements
+
+- Python 3.7
+
 ## Installation
 
 ```bash
@@ -36,3 +40,6 @@ In `wine_ai/settings.py` set `REMOTE_DEBUGGING` to True.
 ```bash
 $ python main.py --init-db
 ```
+
+---
+Looks best on KDE Plasma
