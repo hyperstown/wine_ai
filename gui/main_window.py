@@ -273,6 +273,11 @@ class MainWindow(QMainWindow):
 
     def next_page(self):
         if self.page_index < self.stacked_widget.count() - 1:
+            if self.page_index == 0 and get_data_input(self.p1) == -1:
+                self.p1.label1.setText(self.p1.label1.text() + "\n\n\n Specifying your age is required!")
+                return
+            elif self.page_index == 0:
+                self.p1.label1.setText(self.p1.label1.text().replace("\n\n\n Specifying your age is required!", ""))
             self.page_index += 1
             self.stacked_widget.setCurrentIndex(self.page_index)
 
