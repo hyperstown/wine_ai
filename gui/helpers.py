@@ -14,7 +14,7 @@ def get_data_check_p1(p1):
         "alcoholic_wines": p1.check2.isChecked(),
         "is_drunk": p1.check3.isChecked(),
         "is_vegan": p1.check4.isChecked(),
-}
+    }
 
 def get_data_input(widget, many=False):
     

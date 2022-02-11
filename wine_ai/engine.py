@@ -70,7 +70,7 @@ class WineHelper(KnowledgeEngine):
             self.facts[self.action], action='abort', reason='Selected non alcoholic and alcoholic wines. Critera are invalid.'
         ).__factid__
 
-    @Rule(OR(Fact(is_drunk=True), Fact(non_alcoholic_wines=False)))
+    @Rule(AND(Fact(is_drunk=True), Fact(non_alcoholic_wines=False)))
     def user_drunk(self):
         print_debug("user_drunk")
         self.action = self.modify(
