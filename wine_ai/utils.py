@@ -35,6 +35,10 @@ def increment_score(wine, score_increment=1):
     else:
         WINES[_WINES_MAP[wine]]["score"] += score_increment
 
+def reset_score():
+    for v in  _WINES_MAP.values():
+        WINES[v]["score"] = 0
+
 def detect_time_of_the_day():
     hour = datetime.now().hour
     if (hour > 6) and (hour <= 12):
@@ -83,9 +87,13 @@ def get_price_range(price_range):
 def get_best_wine(preferences, gui=False):
         """ Fetches wine from database """
         result = ""
+        best_wine = {"name": "none", "score": 0}
+        for wine in WINES:
+            if best_wine.get('score', 0) < wine.get("score", 0):
+                best_wine["score"] = wine.get("score", 0)
+                best_wine["name"] = wine.get("name", "none")
 
-        WINES.sort(key=operator.itemgetter('score'), reverse=True)
-        wine_filter = {"type": WINES[0]["name"]}
+        wine_filter = {"type": best_wine["name"]}
         if preferences["is_vegan"]:
             wine_filter["is_vegan"] = preferences["is_vegan"]
         # if both are True no filter
@@ -96,17 +104,19 @@ def get_best_wine(preferences, gui=False):
         # if price range is specified filter that too.
         if preferences['price_range']:
             qs = Wine.objects.filter(**wine_filter).filter(
-                Wine.price.between(preferences['price_range'][0], preferences['price_range'][1]), 
+                Wine.price.between(*preferences['price_range'])
             ).order_by("price")
             if qs.count() == 0:
-                qs = Wine.objects.filter(type=WINES[0]["name"]).order_by("price")
-                if qs.count() == 0:
-                    return "Something went wrong!"
-                    # print(wine_filter)
                 if not gui:
                     show_all = re_input("No wine in current price range. Ignore limit? [Y/n] ")
                     if not show_all:
                         return result
+                    else:
+                        qs = Wine.objects.filter(type=best_wine["name"]).order_by("price")
+                        if qs.count() == 0:
+                            return "Something went wrong!"
+                else:
+                    return "No wine in current price range!"
         else:
             qs = Wine.objects.filter(**wine_filter).order_by("price")
 

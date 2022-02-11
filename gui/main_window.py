@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIntValidator
 
 from wine_ai.engine import WineHelperGUI
+from wine_ai.utils import reset_score
 
 from .mixins import WidgetFormMixin
 from .helpers import get_data_check_p1, get_data_radio, get_data_input
@@ -299,7 +300,7 @@ class MainWindow(QMainWindow):
             text += data.get('result', '')
 
             self.p7.label2.setText(text)
-            
+            reset_score()
 
 
     def get_full_data(self):
