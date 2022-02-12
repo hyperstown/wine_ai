@@ -43,7 +43,7 @@ class Widget1(WidgetFormMixin, QWidget):
     def set_middle_layout(self):
 
         # Page description
-        self.label1 = QLabel(text="Welcome to Wine adviser!\nPlease answer the questions below.")
+        self.label1 = QLabel(text="Welcome to Wine Adviser!\nPlease answer the questions below.")
 
         # age
         input_label = QLabel("Enter your age:")
