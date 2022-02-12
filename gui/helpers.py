@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QRadioButton, QLineEdit
 def get_data_radio(widget):
         for child in widget.children():
             if isinstance(child, QRadioButton) and child.isChecked():
-                return child.text()
+                return child.text().lower()
         return ''
 
 

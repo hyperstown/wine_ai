@@ -43,10 +43,10 @@ class Widget1(WidgetFormMixin, QWidget):
     def set_middle_layout(self):
 
         # Page description
-        self.label1 = QLabel(text="Welcome to Wine adviser!\nPlease answer questions below.")
+        self.label1 = QLabel(text="Welcome to Wine adviser!\nPlease answer the questions below.")
 
         # age
-        input_label = QLabel("Enter your age")
+        input_label = QLabel("Enter your age:")
         input_layout = QVBoxLayout()
         input_filed = QLineEdit()
         input_filed.setValidator(QIntValidator())
@@ -59,8 +59,8 @@ class Widget1(WidgetFormMixin, QWidget):
 
 
         # checkboxes
-        self.check1 = QCheckBox("Intrested in non alcoholic wines")
-        self.check2 = QCheckBox("Intrested in alcoholic wines")
+        self.check1 = QCheckBox("Interested in non-alcoholic wines")
+        self.check2 = QCheckBox("Interested in alcoholic wines")
         self.check3 = QCheckBox("Are you drunk?")
         self.check4 = QCheckBox("Are you a vegan?")
 
@@ -83,7 +83,7 @@ class Widget2(WidgetFormMixin, QWidget):
 
     def set_middle_layout(self):
         
-        label = QLabel(text="Select time of the day:")
+        label = QLabel(text="Select the time of day:")
 
         select_box_layout = QVBoxLayout()
         select_box_layout.addWidget(label)
@@ -103,7 +103,7 @@ class Widget3(WidgetFormMixin, QWidget):
 
     def set_middle_layout(self):
         
-        label = QLabel(text="Select type of meeting:")
+        label = QLabel(text="Select the type of meeting:")
 
         select_box_layout = QVBoxLayout()
         select_box_layout.addWidget(label)
@@ -123,7 +123,7 @@ class Widget4(WidgetFormMixin, QWidget):
 
     def set_middle_layout(self):
         
-        label = QLabel(text="Select type of dish:")
+        label = QLabel(text="Select the type of dish:")
 
         select_box_layout = QVBoxLayout()
         select_box_layout.addWidget(label)
@@ -131,7 +131,7 @@ class Widget4(WidgetFormMixin, QWidget):
 
         options_list = [
             'Red meat', 'Poultry', 'Pasta', 'Fish', 'Pork',
-            'Barbecue', 'Seafood', 'Salad', 'Dessert', 'Appetizer and snacks'
+            'Barbecue', 'Seafood', 'Salad', 'Dessert', 'Appetizer/Snacks'
         ]
 
         for option in options_list:
@@ -157,7 +157,7 @@ class Widget5(WidgetFormMixin, QWidget):
         ]
 
         for option in options_list:
-            select_box_layout.addWidget(QRadioButton(option))
+            select_box_layout.addWidget(QRadioButton(option.capitalize()))
 
         select_box_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -167,7 +167,7 @@ class Widget6(WidgetFormMixin, QWidget):
 
     def set_middle_layout(self):
         
-        self.label1 = QLabel(text="Specify price range")
+        self.label1 = QLabel(text="Specify the price range")
 
         select_box_layout = QHBoxLayout()
         input_filed1 = QLineEdit()
@@ -192,7 +192,7 @@ class Widget7(WidgetFormMixin, QWidget):
 
     def set_middle_layout(self):
         
-        label1 = QLabel(text="Your information")
+        label1 = QLabel(text="Result:")
         self.label2 = QLabel(text="Fetching data...")
 
         select_box_layout = QVBoxLayout()
@@ -329,6 +329,6 @@ class MainWindow(QMainWindow):
 def render_window(args=[]):
     app = QApplication(args)
     screen = app.primaryScreen()
-    w = MainWindow(screen, title="Wine AI")
+    w = MainWindow(screen, title="Wine Adviser")
     w.show()
     sys.exit(app.exec_())
